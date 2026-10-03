@@ -49,15 +49,16 @@
 
 ---
 
-## 六仓库职责导航
+## 七仓库职责导航
 
-项目按职责拆分为六个相互协作的代码仓库：
+项目按职责拆分为七个相互协作的代码仓库：
 
 | 仓库                                                                | 模块定位       | 主要职责                                 |
 | :------------------------------------------------------------------ | :------------- | :--------------------------------------- |
 | [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢 | 需求、架构、算法方案、接口和质量规范     |
-| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 业务后端与平台 | API、识别会话、样本资产和日期决策        |
+| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 集成调度训练平台 | 样本资产、数据集版本与切分、标注作业、训练任务调度和模型仓库 |
 | [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测 | 小目标检测、工业 OCR、消融实验和模型导出 |
+| [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台       | 模型加载与前向推理、识别会话、证据聚合和标示状态决策 |
 | [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统   | 多图会话、检测结果展示和人工纠偏         |
 | [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端客户端   | 实拍辅助、离线台账和端侧推理探索         |
 | [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信小程序端   | 轻量查验、大字模式和结果分享             |
