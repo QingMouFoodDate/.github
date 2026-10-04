@@ -2,6 +2,8 @@
 
 > 面向消费者、商超和仓储场景的食品包装日期智能识别原型系统
 
+> 当前项目处于需求与架构设计阶段，M0 单图闭环待实现。设计文档不等同于功能已完成，具体实现状态以各仓库代码、测试和发布记录为准。
+
 轻眸识刻聚焦食品包装上微小、模糊、反光或位置不固定的生产日期与保质期信息，尝试通过计算机视觉和日期语义解析，帮助用户更清晰地查看包装标示并完成期限判断。
 
 ## 解决的问题
@@ -25,7 +27,7 @@
 - **找得到**：面向小目标日期区域进行定位检测，减少整图文字干扰；
 - **读得准**：对局部日期区域进行增强和受限字符序列识别，针对点阵喷码等场景开展纠错研究；
 - **判得清**：聚合生产日期、到期日和保质期等证据，解析日期语义并输出结构化标示状态；
-- **能改进**：支持人工纠偏和难例样本回流，为后续模型和规则迭代提供数据基础。
+- **能改进**：规划人工纠偏审核和难例样本回流，为后续模型和规则迭代提供数据基础。
 
 系统规划的处理链路如下：
 
@@ -49,18 +51,19 @@
 
 ---
 
-## 六仓库职责导航
+## 仓库与服务职责导航
 
-项目按职责拆分为六个相互协作的代码仓库：
+当前项目包含六个代码仓库，并设置一个尚未独立成仓的 Inference Runtime 推理服务边界：
 
 | 仓库                                                                | 模块定位       | 主要职责                                 |
 | :------------------------------------------------------------------ | :------------- | :--------------------------------------- |
 | [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢 | 需求、架构、算法方案、接口和质量规范     |
-| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 业务后端与平台 | API、识别会话、样本资产和日期决策        |
+| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 业务后端与业务编排 | API、识别会话、样本资产、证据聚合和日期决策 |
+| `Inference Runtime`                                                  | 模型推理服务边界 | 规划加载已发布模型、执行检测与 OCR、返回 Observation |
 | [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测 | 小目标检测、工业 OCR、消融实验和模型导出 |
-| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统   | 多图会话、检测结果展示和人工纠偏         |
-| [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端客户端   | 实拍辅助、离线台账和端侧推理探索         |
-| [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信小程序端   | 轻量查验、大字模式和结果分享             |
+| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 客户端方向 | 规划多图会话、检测结果展示和人工纠偏     |
+| [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端扩展方向 | 规划实拍辅助、离线台账和端侧推理探索     |
+| [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信入口方向   | 规划轻量查验、大字模式和结果分享         |
 
 ---
 
