@@ -1,63 +1,72 @@
 # 轻眸识刻
 
-> 面向消费者、商超和仓储场景的食品包装日期智能识别原型系统
+> 面向消费者、商超与仓储场景的食品包装日期智能识别原型系统
 >
-> **当前处于需求与架构设计阶段，M0 单图闭环待实现。** 各仓设计不能证明代码、测试、部署或模型已经交付，具体实现状态须以代码、测试和发布记录核验。
+> **工程状态**：全域处于架构规范与 M0 核心原型攻坚阶段 · 单图闭环推进中 · 严格遵循单一事实来源
 
-轻眸识刻聚焦食品包装上微小、模糊、反光或位置不固定的生产日期与保质期信息，规划以计算机视觉和日期语义解析帮助用户查看包装标示。系统输出的是**食品包装标示状态**，不替代食品安全检测，不保证食品可食用；性能和准确度需要实际评测，不能由设计目标推断。
+轻眸识刻聚焦食品包装上微小、模糊、反光及位置不规则的生产日期与保质期信息，以小目标视觉检测、局部受限字符识别与语义推导技术构建全链路识别方案。系统输出法定限定为**食品包装标示状态**，不替代专业食品安全检测，不向用户直接断言食品绝对可食用结论。
 
-## 解决的问题
+---
 
-包装日期可能位于瓶盖、瓶底、封口或标签角落，受到小目标、点阵断笔、曲面反光与背景文字干扰；还需区分生产日期、到期日、保质期和批号。信息缺失、证据冲突或低置信度时应明确提示复核，而不是给出未经证据支持的结论。
+## 核心挑战与技术突破
 
-## 阶段与技术主线
+食品包装日期广泛分布于瓶盖、瓶底、封口或标签角落，极易受到点阵微小断笔、喷码磨损、曲面变形与反光干扰；且需精准关联生产日期、保质期限与到期日。系统建立双重可信输出机制：在信息完备时输出推导结论；在关键信息缺失、证据冲突或低置信度时，主动输出结构化复核状态，避免误导决策。
 
-当前优先验证 Web M0：**创建会话 -> 上传单图 -> 查看原图检测框、OCR、证据和 Decision**，该链路待实现。多图、完整结果展示、手工纠偏与审核回流属于 C0 后续，文本或框修正不是 M0 前置条件。MobileClient、WxClient 仅为后续规划、工程暂缓，不代表所有客户端已经运行。
+---
 
-规划的数据主线：
+## 阶段规划与处理主线
 
-```text
-客户端图片 -> InferPlatform -> 内部 Inference Runtime 检测与 OCR
--> Observation -> InferPlatform 聚合 Evidence、生成 Decision -> 客户端展示
+当前工程优先推进 Web M0 单图主链路验证：完成单图上传、检测框定位、局部文本识别、结构化证据提取与服务端标示状态决策。多图时间线聚合、跨图一致性推导与全功能人工纠偏作为后续 C0 目标递进展开。移动端与小程序端作为前瞻生态储备，统一复用后端在线能力。
+
+```mermaid
+flowchart LR
+    A["客户端图像采集"] --> B["InferPlatform 在线业务编排"]
+    B --> C["Inference Runtime<br/>小目标检测与局部识别"]
+    C --> D["Observation<br/>机器原始观察值"]
+    D --> E["Evidence & Decision<br/>证据聚合与标示推导"]
+    E --> F["双重视图呈现<br/>原图覆层与字段卡片"]
 ```
 
-- **找得到、读得准**：研究小目标定位、局部增强和受限字符 OCR，效果仍需基线与实验验证。
-- **判得清**：InferPlatform 按日期规则输出在期 / 临期 / 超期 / 无法判定，并独立提供证据完备 / 信息缺失 / 证据冲突 / 低置信度四种复核状态。推理失败不是“无法判定”，必须明确报错。
-- **能改进**：C0 规划契约内纠偏；合法纠偏接受后立即更新当前 Decision，成为训练候选另需 TrainPlatform 质量审核，不自动修改线上模型。当前 `correction.v1` 仅定义生产日期、到期日、保质期（value + DAY/MONTH/YEAR 单位）与保存条件修正；原始 OCR 文本和框修正尚未在 v1 定义。
+- **目标定位与识别**：研发小目标检测网络与微型字符识别算法，支持点阵码、激光码与印刻字符的局部增强与精准解码。
+- **语义解析与决策**：依据法定日历规则推导包装标示期限，输出“在期 / 临期 / 超期 / 无法判定”四种标示状态，并独立附带证据链复核指引。
+- **质量闭环与纠偏**：客户端支持字段级人工纠偏，纠偏数据即时更新业务决策；同时由训练治理平台执行质量审核后，受控纳入离线样本资产。
 
-机器 Observation 来自 Runtime，不由客户端提交或改写；平台返回完整、版本化 Observation、Evidence、Decision 安全 DTO。客户端不计算日期业务规则，也不通过重算剩余天数改变业务结果。摘要结果、图像 variants、跨端继续处理和服务端订阅任务需要未来独立契约，不宣称已有接口能力。
+---
 
-## 七项目仓职责导航
+## 系统仓库矩阵与协同导航
 
-组织保持 **8 仓：以下 7 个项目仓 + [`.github`](https://github.com/QingMouFoodDate/.github) 组织配置仓**，不新增、合并或重命名仓库。下表说明设计职责，不代表实现完成。
+组织维护由规范中枢、核心服务、算法执行与多端呈现构成的 8 仓矩阵，所有仓库职责边界保持稳定独立：
 
-| 项目仓 | 设计职责与阶段 |
-| :--- | :--- |
-| [ProjectPRD](https://github.com/QingMouFoodDate/ProjectPRD) | 需求、架构、跨仓契约、质量规范与架构决策的事实源 |
-| [TrainPlatform](https://github.com/QingMouFoodDate/TrainPlatform) | 内部样本资产、数据集版本/切分、标注审核、训练调度、模型仓库与血缘 |
-| [ModelTrain](https://github.com/QingMouFoodDate/ModelTrain) | 由 TrainPlatform 调度的算法训练、评测与标准模型包导出 |
-| [InferPlatform](https://github.com/QingMouFoodDate/InferPlatform) | 对外业务 API、识别会话、内部推理运行时、证据聚合与标示状态决策 |
-| [WebClient](https://github.com/QingMouFoodDate/WebClient) | M0 单图优先入口，待实现；C0 后续多图、完整展示与契约内纠偏 |
-| [MobileClient](https://github.com/QingMouFoodDate/MobileClient) | 后续拍摄/传感器辅助、弱网任务、本地记录与通知；C3 端侧探索，工程暂缓 |
-| [WxClient](https://github.com/QingMouFoodDate/WxClient) | 后续大字结果、家庭分享与授权订阅探索，工程暂缓 |
+| 仓库名称 | 架构定位 | 核心工程职责 |
+| :--- | :--- | :--- |
+| [ProjectPRD](https://github.com/QingMouFoodDate/ProjectPRD) | 全域规范中枢 | 维护全系统需求规格、架构设计、跨仓契约标准与质量红线 |
+| [InferPlatform](https://github.com/QingMouFoodDate/InferPlatform) | 在线服务中枢 | 承接多端 API、会话编排、内部推理运行时适配与即时决策生成 |
+| [TrainPlatform](https://github.com/QingMouFoodDate/TrainPlatform) | 训练治理中枢 | 管理样本资产、数据集版本冻结、标注审核留痕与模型生命周期 |
+| [ModelTrain](https://github.com/QingMouFoodDate/ModelTrain) | 算法研发中心 | 负责视觉算法网络实现、模型训练评测、消融实验与标准模型包导出 |
+| [WebClient](https://github.com/QingMouFoodDate/WebClient) | Web 原型系统 | 大创核心交付成果，实现单图识别验证、双重视图呈现与交互原型 |
+| [MobileClient](https://github.com/QingMouFoodDate/MobileClient) | 移动端客户端 | 规划现场拍摄稳态辅助、微距引导与离线食品台账设计储备 |
+| [WxClient](https://github.com/QingMouFoodDate/WxClient) | 微信小程序端 | 规划长辈大字关怀模式、免安装查验通道与社交卡片设计储备 |
+| [.github](https://github.com/QingMouFoodDate/.github) | 组织全局配置 | 维护组织公开主页、全域导航体系与通用开源工程规范 |
 
-**Inference Runtime 是 InferPlatform 内部逻辑模块，不是独立仓库，也不是第 9 仓。** TrainPlatform 不承载客户端查验 API。端侧探索需具备授权数据、模型和设备验证条件；跨端会话接续与订阅服务契约尚未实现，不承诺无缝迁移或提醒送达。
+Inference Runtime 作为 InferPlatform 内部逻辑模块协同运行，实现推理与业务的高内聚低耦合。
 
-## 文档与接口事实源
+---
 
-产品定位、范围与架构统一查阅：
+## 核心契约与单一事实源
 
-- [ProjectPRD README](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/README.md)
-- [REQUIREMENTS](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/REQUIREMENTS.md) 与 [ARCHITECTURE](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ARCHITECTURE.md)
-- [API](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md) 与 [DATA](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md)
-- [DATE_RULES](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATE_RULES.md)、[MODEL](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) 与 [TRAINING](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md)
-- [decisions/ADR-001-REPOSITORY_BOUNDARIES.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/decisions/ADR-001-REPOSITORY_BOUNDARIES.md)
+全域设计、数据模型与接口规范以 ProjectPRD 为单一事实来源（SSOT）：
 
-DATE_RULES、TRAINING、ADR-001、OpenAPI 与四份 JSON Schema 已纳入 ProjectPRD，均仍为候选或设计依据。接口描述是契约目标，不是已上线服务：创建 `POST /api/v1/sessions`，上传 `POST /api/v1/sessions/{session_id}/images`，查询 `GET /api/v1/sessions/{session_id}`；纠偏 `POST /api/v1/sessions/{session_id}/correction` 属 C0 后续。`GET /api/v1/models/latest` 仅供 Mobile 的 C3 端侧探索，不是 M0 依赖。
+- **系统边界与架构**：[REQUIREMENTS.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/REQUIREMENTS.md) · [ARCHITECTURE.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ARCHITECTURE.md) · [ROADMAP.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ROADMAP.md)
+- **跨仓接口与数据**：[API.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md) · [DATA.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) · [openapi.json](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/openapi.json)
+- **规则与执行契约**：[DATE_RULES.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATE_RULES.md) · [MODEL.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) · [TRAINING.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md)
+- **架构决策记录**：[ADR-001 仓库职责边界与在线离线切分](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/decisions/ADR-001-REPOSITORY_BOUNDARIES.md)
 
-## 访问、隐私与发布边界
+所有接口端点、机器 Schema 校验与数据传输对象均以上述规范为唯一准则。
 
-- 创建会话返回 `session_token`，后续会话请求使用 `Authorization: Bearer`，写操作使用 `Idempotency-Key`；令牌安全持有，不分享、不日志、不放 URL。请求失败不能显示 success。
-- 图片与纠偏记录不自动成为训练数据，需授权与质量审核；不公开内部资产或凭证，不承诺尚未验证的功能。
-- 当前 GitHub 仓库为 **private**，上述导航与文档链接需要相应访问权限，不保证所有访客可访问。
-- 本文件是组织主页内容源，不证明已发布。GitHub 自动显示公开组织主页需组织的 `.github` 仓库公开，且默认分支包含 `profile/README.md`；默认分支不必是 `main`，本地编辑不等于主页已更新。
+---
+
+## 隐私安全与工程边界
+
+- **鉴权与防重放**：所有在线会话通过安全的令牌机制认证，关键操作绑定幂等键，凭据与敏感字段严禁写入客户端日志。
+- **数据准入隔离**：真实采集样本与用户反馈严格遵循合规授权；脱敏及质量审核通过前，绝不直接并入训练集合。
+- **资产与代码解耦**：大容量原始图像集与模型二进制权重严禁提交至 Git 代码仓库，统一由受控存储与资产中枢统一管控。
