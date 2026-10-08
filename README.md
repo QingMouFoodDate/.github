@@ -17,14 +17,17 @@
 
 ## 主页维护与展示条件
 
-1. 内容统一维护在 [`profile/README.md`](profile/README.md)，保留阶段声明、七项目仓导航与契约入口，不承诺未实现功能。
-2. GitHub 组织公开主页生效条件：`.github` 仓库公开且默认分支包含 `profile/README.md`（不限 `main` 分支）。本地修改不代表已发布。
-3. 发布由维护者确认仓库可见性、默认分支与文件位置；公开前核验敏感信息。
-4. 当前仓库为 private，访问需相应权限；保留导航不等于公开仓库。
-5. 主页严禁包含本地私有路径或未脱敏数据；不得将规划目标写成实测成果。系统输出严格限定为包装标示状态，不作食品安全结论。
+| 维护维度 | 规范准则与生效要求 | 维护红线与注意事项 |
+| :--- | :--- | :--- |
+| **主页内容源** | 统一维护于 `profile/README.md` | 严禁复制冗长 PRD 全文，仅保留核心架构与导航入口 |
+| **生效前置条件** | `.github` 仓库公开（Public）且默认分支包含主页文件 | 默认分支不必为 `main`，本地单机修改不等于已公开生效 |
+| **公开安全边界** | 仓库面向全网公开，任何人均可访问 | 严禁写入本地私有路径、绝对磁盘地址或未脱敏的数据信息 |
+| **成果宣传准则** | 遵循实事求是原则，如实标示当前阶段为“M0 原型研发” | 严禁将规划目标或示例指标伪装成已经跑通的实测成果 |
+
+系统输出严格限定为包装标示状态，不作食品安全结论。
 
 ## 统一事实源
 
-产品与职责以 [ProjectPRD README](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/README.md)、[REQUIREMENTS](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/REQUIREMENTS.md)、[ARCHITECTURE](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ARCHITECTURE.md) 为准；跨仓契约以 [API](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[DATA](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md)、[DATE_RULES](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATE_RULES.md)、[MODEL](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md)、[TRAINING](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md) 为准；仓库边界见 [ADR-001](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/decisions/ADR-001-REPOSITORY_BOUNDARIES.md)。
+产品与职责以 [ProjectPRD README](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/README.md)、[需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)、[系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md) 为准；跨仓契约以 [在线接口契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/在线接口契约.md)、[核心数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/核心数据模型.md)、[日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md)、[模型交付规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/模型交付规约.md)、[离线训练规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/离线训练规约.md) 为准。
 
 OpenAPI 与四份 JSON Schema 已纳入 ProjectPRD 作为设计依据；组织配置仓仅引用，不重复定义。

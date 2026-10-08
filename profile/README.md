@@ -56,10 +56,11 @@ Inference Runtime 作为 InferPlatform 内部逻辑模块协同运行，实现�
 
 全域设计、数据模型与接口规范以 ProjectPRD 为单一事实来源（SSOT）：
 
-- **系统边界与架构**：[REQUIREMENTS.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/REQUIREMENTS.md) · [ARCHITECTURE.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ARCHITECTURE.md) · [ROADMAP.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/ROADMAP.md)
-- **跨仓接口与数据**：[API.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md) · [DATA.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) · [openapi.json](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/openapi.json)
-- **规则与执行契约**：[DATE_RULES.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATE_RULES.md) · [MODEL.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) · [TRAINING.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md)
-- **架构决策记录**：[ADR-001 仓库职责边界与在线离线切分](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/decisions/ADR-001-REPOSITORY_BOUNDARIES.md)
+| 规范维度 | 事实源契约 | 核心约束说明 |
+| :--- | :--- | :--- |
+| **系统边界与架构** | [需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md) · [系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md) · [开发路线](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/开发路线.md) | 确立系统功能边界、8 仓架构分层与 M0 迭代里程碑 |
+| **跨仓接口与数据** | [在线接口契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/在线接口契约.md) · [核心数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/核心数据模型.md) · [openapi.json](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
+| **规则与执行契约** | [日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md) · [模型交付规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/模型交付规约.md) · [离线训练规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/离线训练规约.md) | 标示状态法定决策逻辑、标准模型交付规约与样本质量准入 |
 
 所有接口端点、机器 Schema 校验与数据传输对象均以上述规范为准。
 
@@ -67,6 +68,9 @@ Inference Runtime 作为 InferPlatform 内部逻辑模块协同运行，实现�
 
 ## 隐私安全与工程边界
 
-- **鉴权与防重放**：在线会话通过安全令牌认证，关键操作绑定幂等键，敏感字段严禁写入客户端日志。
-- **数据准入隔离**：真实采集样本与用户反馈遵循合规授权；脱敏及质量审核通过前，绝不并入训练集合。
-- **资产与代码解耦**：大容量图像与模型二进制权重严禁提交至 Git 仓库，统一由受控存储管控。
+| 控制维度 | 安全规约与工程要求 | 实施机制 |
+| :--- | :--- | :--- |
+| **鉴权与防重放** | 在线会话通过安全令牌认证，关键操作绑定幂等键 | 敏感字段严禁写入客户端日志，防止会话重放与凭证泄漏 |
+| **数据准入隔离** | 真实采集样本与用户纠偏遵循合规授权与隐私保护 | 经脱敏及双人审核通过前，严禁并入离线训练集 |
+| **资产代码解耦** | 大容量图像原图与模型二进制权重严禁提交至 Git 仓库 | 统一由对象存储与模型资产库受控分发 |
+
