@@ -59,8 +59,9 @@ Inference Runtime 作为 InferPlatform 内部逻辑模块协同运行，实现�
 | 规范维度 | 事实源契约 | 核心约束说明 |
 | :--- | :--- | :--- |
 | **系统边界与架构** | [需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md) · [系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md) · [开发路线](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/开发路线.md) | 确立系统功能边界、8 仓架构分层与 M0 迭代里程碑 |
-| **跨仓接口与数据** | [在线接口契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/在线接口契约.md) · [核心数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/核心数据模型.md) · [openapi.json](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
-| **规则与执行契约** | [日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md) · [模型交付规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/模型交付规约.md) · [离线训练规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/离线训练规约.md) | 标示状态法定决策逻辑、标准模型交付规约与样本质量准入 |
+| **跨仓接口与数据** | [contracts/API.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md) · [contracts/DATA.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) · [openapi.json](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/openapi.json) | 统一会话编排、REST 接口端点定义与 Observation/Evidence 数据模型 |
+| **规则与执行契约** | [日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md) · [contracts/MODEL.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) · [contracts/TRAINING.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md) | 标示状态法定决策逻辑、标准模型交付规约与样本质量准入 |
+
 
 所有接口端点、机器 Schema 校验与数据传输对象均以上述规范为准。
 

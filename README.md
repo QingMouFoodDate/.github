@@ -28,6 +28,6 @@
 
 ## 统一事实源
 
-产品与职责以 [ProjectPRD README](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/README.md)、[需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)、[系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md) 为准；跨仓契约以 [在线接口契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/在线接口契约.md)、[核心数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/核心数据模型.md)、[日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md)、[模型交付规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/模型交付规约.md)、[离线训练规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/离线训练规约.md) 为准。
+产品与职责以 [ProjectPRD README](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/README.md)、[需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)、[系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md) 为准；跨仓契约以 [contracts/API.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[contracts/DATA.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md)、[日期推导规则](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/日期推导规则.md)、[contracts/MODEL.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md)、[contracts/TRAINING.md](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/TRAINING.md) 为准。
 
 OpenAPI 与四份 JSON Schema 已纳入 ProjectPRD 作为设计依据；组织配置仓仅引用，不重复定义。
