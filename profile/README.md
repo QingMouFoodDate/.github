@@ -1,6 +1,8 @@
 # 轻眸识刻
 
 > 面向消费者、商超和仓储场景的食品包装日期智能识别原型系统
+>
+> **工程状态**：M0 单图闭环待实现 · Web 优先 · 移动端与微信端暂缓
 
 轻眸识刻聚焦食品包装上微小、模糊、反光或位置不固定的生产日期与保质期信息，尝试通过计算机视觉和日期语义解析，帮助用户更清晰地查看包装标示并完成期限判断。
 
@@ -43,7 +45,7 @@ flowchart LR
 
 ## 项目文档
 
-完整的需求、架构、算法方案和跨仓契约集中维护在 [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)：
+完整的需求、架构、算法方案和跨仓契约集中维护在 [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)，文档能否打开以仓库实际访问权限为准：
 
 - [项目需求](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)
 - [系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md)
@@ -56,17 +58,18 @@ flowchart LR
 
 ## 七仓库职责导航
 
-项目按职责拆分为七个相互协作的代码仓库：
+项目按职责划分为以下七个仓库，另由 `.github` 维护组织主页：
 
 | 仓库                                                                | 模块定位       | 主要职责                                 |
 | :------------------------------------------------------------------ | :------------- | :--------------------------------------- |
 | [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢 | 需求、架构、算法方案、接口和质量规范     |
 | [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 集成调度训练平台 | 样本资产、数据集版本与切分、标注作业、训练任务调度和模型仓库 |
 | [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测 | 小目标检测、工业 OCR、消融实验和模型导出 |
-| [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台       | 模型加载与前向推理、识别会话、证据聚合和标示状态决策 |
-| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统   | 多图会话、检测结果展示和人工纠偏         |
+| [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台       | 识别会话、证据聚合与标示状态决策，内置 Runtime 执行模型加载和前向推理 |
+| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统   | 优先实现单图识别与双重视图，多图会话和人工纠偏按 C0 推进 |
 | [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端客户端   | 实拍辅助、离线台账和端侧推理探索         |
 | [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信小程序端   | 轻量查验、大字模式和结果分享             |
+| [`.github`](https://github.com/QingMouFoodDate/.github)               | 组织主页配置   | 项目介绍、仓库导航与公开展示维护         |
 
 ---
 
@@ -77,5 +80,5 @@ flowchart LR
 1. 样本以真实食品包装实拍为基础，禁止伪造标签、红圈涂鸦和营销字幕污染；
 2. 各端通过统一的 [API 契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) 和 [模型规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) 协作；
 3. 系统输出的是食品包装上的**标示状态**，不替代食品安全检测；
-4. 对信息缺失、证据冲突或识别置信度不足的情况，优先提示补拍或人工核对；
-5. 项目优先验证单机闭环，再逐步探索移动端、微信小程序和端侧推理等扩展方向。
+4. 对信息缺失、证据冲突或识别置信度不足的情况，分别展示期限状态与复核状态，优先提示补拍或人工核对；信息缺失不等于超期，技术故障单独提示；
+5. 项目先实现 Web 单图 M0 闭环，再按 C0 推进多图与人工纠偏；移动端和微信端暂缓，端侧推理待独立评审。
