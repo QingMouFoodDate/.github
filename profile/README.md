@@ -25,9 +25,11 @@
 项目围绕“找得到、读得准、判得清、能改进”展开：
 
 - **找得到**：面向小目标日期区域进行定位检测，减少整图文字干扰；
-- **读得准**：对局部日期区域进行增强和受限字符序列识别，针对点阵喷码等场景开展纠错研究；
+- **读得准**：对局部日期进行 OCR，按对照结果选择增强或受限字表，研究点阵喷码等场景的识别与误纠正；
 - **判得清**：聚合生产日期、到期日和保质期等证据，解析日期语义并输出结构化标示状态；
-- **能改进**：支持人工纠偏和难例样本回流，为后续模型和规则迭代提供数据基础。
+- **能改进**：规划人工纠偏和独立审核的难例回流，为后续模型与规则迭代提供数据基础。
+
+当前研究候选是“非受控实拍包装日期的证据驱动自适应识读与选择性复核”：先判断结果是否足够可靠，再比较重试或补拍的收益与成本。定位、OCR 和日期解析是已有技术路线，项目贡献须由同条件强基线、未见包装测试和实际结果支持；相关方法仍待实现与验证。
 
 系统规划的处理链路如下：
 
@@ -50,15 +52,16 @@ flowchart LR
 - [项目需求](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)
 - [系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md)
 - [算法研究方案](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/算法实验.md)
+- [研究现状](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/references/研究现状.md)
 - [推进路线](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/开发路线.md)
 - [数据模型与接口契约](https://github.com/QingMouFoodDate/ProjectPRD/tree/main/contracts)
 - [数据质量规范](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/standards/数据质量规范.md)
 
 ---
 
-## 七仓库职责导航
+## 八仓库职责导航
 
-项目按职责划分为以下七个仓库，另由 `.github` 维护组织主页：
+项目按职责划分为以下七个工程仓库，另由 `.github` 维护组织全局配置与主页展示：
 
 | 仓库                                                                | 模块定位       | 主要职责                                 |
 | :------------------------------------------------------------------ | :------------- | :--------------------------------------- |
@@ -81,4 +84,7 @@ flowchart LR
 2. 各端通过统一的 [API 契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) 和 [模型规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) 协作；
 3. 系统输出的是食品包装上的**标示状态**，不替代食品安全检测；
 4. 对信息缺失、证据冲突或识别置信度不足的情况，分别展示期限状态与复核状态，优先提示补拍或人工核对；信息缺失不等于超期，技术故障单独提示；
-5. 项目先实现 Web 单图 M0 闭环，再按 C0 推进多图与人工纠偏；移动端和微信端暂缓，端侧推理待独立评审。
+5. 项目先实现 Web 单图 M0 闭环，再按 C0 推进多图与人工纠偏；移动端和微信端暂缓，端侧推理待独立评审；
+6. 离线主基准受控数据集（MasterBenchmark）实行 **1617 张真实原图**规范管理（100% SHA-256 唯一，含 150 张亲审稀缺长尾难例），严格遵循 **8:1:1 科学分层防泄漏切分**（Train 1293 / Val 162 / Test 162），与在线会话数据保持严格物理隔离。
+
+可靠直接到期日可独立比较期限，临期阈值属于项目可配置策略。起算依据不明时提示复核，不凭默认口径补日期，也不将直接与派生值差一天或同日生产到期直接判为标示错误；已确认的真实冲突仍保留。
