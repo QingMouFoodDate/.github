@@ -1,6 +1,6 @@
-# 轻眸识刻组织主页配置
+# 组织全局配置
 
-本目录维护 QingMouFoodDate 组织的公开主页内容和全局展示配置。
+> 维护 [QingMouFoodDate](https://github.com/QingMouFoodDate) 组织的公开主页展示与全局规范配置。
 
 ---
 
@@ -8,16 +8,22 @@
 
 ```text
 .github/
-├── README.md          # 组织配置说明
-└── profile/           # 组织公开主页内容
+├── README.md          # 仓库运维说明
+├── .github/workflows/ # 可复用契约门禁
+└── profile/
+    └── README.md      # 组织公开主页源文件（由 GitHub 引擎直接渲染于组织首页）
 ```
 
-- [`profile/README.md`](profile/README.md)：组织公开主页的内容源文件，由 GitHub 官方引擎解析并展示在组织主页。
+- **主页源码**：[`profile/README.md`](profile/README.md)
+- **线上主页**：[github.com/QingMouFoodDate](https://github.com/QingMouFoodDate)
+- **契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，负责安装中央校验依赖并执行对应语言门禁；配置存在不代表线上已运行通过。
+- **当前边界**：M0 尚未准出，完整视觉 Runtime、真实模型包与 Web UI 待交付；主页不能将设计目标写成已取得的成绩。
 
-## 主页维护指引
+---
 
-1. 组织主页内容统一维护在 [`profile/README.md`](profile/README.md)；
-2. 主页只展示适合公开访问的项目介绍、仓库导航和技术文档入口；
-3. 主页内容不得写入本地私有路径、绝对磁盘地址或未脱敏数据；
-4. 遵循实事求是原则，如实标示“M0 单图闭环待实现”，移动端与微信端暂缓；
-5. 修改后合并推送到 `main` 分支，GitHub 组织主页将自动同步更新。
+## 维护规范
+
+1. **内容收敛**：对外展示内容统一在 [`profile/README.md`](profile/README.md) 中维护。
+2. **隐私脱敏**：严禁提交本地私有绝对路径、密钥凭证或未脱敏样本。
+3. **状态求真**：主页所列工程状态必须与实际研发进展严格同步。
+4. **自动生效**：变更经审查合入 `main` 分支后，GitHub 组织首页自动同步更新。

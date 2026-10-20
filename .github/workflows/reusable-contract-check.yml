@@ -1,0 +1,57 @@
+name: 统一跨仓契约比对门禁
+
+on:
+  workflow_call:
+    inputs:
+      lang:
+        required: true
+        type: string
+        description: "被测语言或模式类型 (python / typescript / openapi)"
+      code_dir:
+        required: false
+        default: "."
+        type: string
+        description: "待检验的代码目录相对路径 (如 app/schemas 或 src/types)"
+    secrets:
+      CONTRACT_READ_TOKEN:
+        required: false
+        description: "跨私有仓检出 ProjectPRD 所需的精细化只读 PAT (公开仓自动回退 github.token)"
+
+jobs:
+  verify:
+    name: 契约静态对齐核验 (${{ inputs.lang }})
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: 检出当前代码仓源码
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: 稀疏检出中央权威契约 (ProjectPRD)
+        uses: actions/checkout@v4
+        with:
+          repository: QingMouFoodDate/ProjectPRD
+          token: ${{ secrets.CONTRACT_READ_TOKEN || github.token }}
+          path: .central_prd
+          persist-credentials: false
+          sparse-checkout: |
+            contracts
+            standards/verify_contracts.py
+            standards/requirements.txt
+
+      - name: 配置 Python 3.12 运行环境
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: 安装契约校验依赖
+        run: python -m pip install -r .central_prd/standards/requirements.txt
+
+      - name: 执行契约静态对齐与 OpenAPI 引用检查
+        run: |
+          python .central_prd/standards/verify_contracts.py \
+            --contracts-dir .central_prd/contracts \
+            --code-dir ${{ inputs.code_dir }} \
+            --lang ${{ inputs.lang }}

@@ -1,37 +1,39 @@
-# 轻眸识刻
+# 轻眸食期
 
-> 面向消费者、商超和仓储场景的食品包装日期智能识别原型系统
+> 小目标驱动的食品包装日期智能识别方法研究
+>
+> 面向真实食品包装场景的小尺度日期文本检测与轻量化识别方法，构建面向消费者、商超与仓储场景的智能识别原型系统。
 >
 > **工程状态**：M0 单图闭环待实现 · Web 优先 · 移动端与微信端暂缓
 
-轻眸识刻聚焦食品包装上微小、模糊、反光或位置不固定的生产日期与保质期信息，尝试通过计算机视觉和日期语义解析，帮助用户更清晰地查看包装标示并完成期限判断。
-
-## 解决的问题
-
-食品包装日期常见于瓶盖、瓶底、封口、袋身边缘或标签角落，容易受到以下因素影响：
-
-- 日期区域面积小，容易被整图文字和包装图案干扰；
-- 点阵喷码可能存在断笔、粘连和低对比度；
-- 金属、塑料等曲面容易产生反光、褶皱或透视变形；
-- 生产日期、有效期、保质期和批号需要进一步区分；
-- 信息不完整或识别置信度不足时，需要明确提示人工复核。
-
-典型应用场景包括消费者购买前查验、家庭食品整理，以及商超和仓储场景中的日期巡检。
+轻眸食期聚焦食品包装上微小、模糊、反光及位置任意的生产日期与保质期信息，通过计算机视觉、字符识别与日期语义解析技术，辅助用户辨析包装标示并完成期限判定。
 
 ---
 
-## 核心技术闭环
+## 核心挑战
 
-项目围绕“找得到、读得准、判得清、能改进”展开：
+包装日期是核对标示期限的参考，不足以证明食品安全。但在实际场景中，日期常以小字号或低对比度喷码印制在瓶盖、瓶底、封口或折角处。包装材质反光、软包褶皱变形、字符断笔粘连及复杂装潢背景，导致辨识难度极高，给视力退化的老年人及视障群体带来显著障碍。
 
-- **找得到**：面向小目标日期区域进行定位检测，减少整图文字干扰；
-- **读得准**：对局部日期进行 OCR，按对照结果选择增强或受限字表，研究点阵喷码等场景的识别与误纠正；
-- **判得清**：聚合生产日期、到期日和保质期等证据，解析日期语义并输出结构化标示状态；
-- **能改进**：规划人工纠偏和独立审核的难例回流，为后续模型与规则迭代提供数据基础。
+本项目聚焦非受控实拍环境下的五大工程挑战：
 
-当前研究候选是“非受控实拍包装日期的证据驱动自适应识读与选择性复核”：先判断结果是否足够可靠，再比较重试或补拍的收益与成本。定位、OCR 和日期解析是已有技术路线，项目贡献须由同条件强基线、未见包装测试和实际结果支持；相关方法仍待实现与验证。
+- **目标微小且背景干扰大**：日期区域面积占比极低，易被整包装图文装饰与说明干扰；
+- **印刷退化与点阵字符粘连**：喷码工艺常存在断笔、粘连、墨迹晕染及低对比度褪色；
+- **物理形变与非受控成像**：金属与塑料曲面易反光，软包装易发生褶皱扭曲与透视变形；
+- **多字段混杂与语义歧义**：生产日期、有效截止日、保质期时长（如“常温保存12个月”）与批号混排，需准确解耦；
+- **置信度度量与人机协同复核**：针对残损、模糊等边缘样本，需量化置信度并提供人工复核兜底。
 
-系统规划的处理链路如下：
+**应用场景**：涵盖消费者购买查验、家庭食品临期管理，以及商超零售与仓储物流效期巡检。
+
+---
+
+## 技术闭环
+
+以下是待端到端验证的设计流程，不是已取得的识别或可靠性成绩：
+
+- **区域定位**：构建小目标日期专用检测模型，快速抑制复杂背景干扰；
+- **文本识别**：针对点阵喷码与退化字符，评估自适应增强与训练侧字表的识别收益；
+- **语义推导**：抽取生产日期、到期日与保质期，完成效期状态智能推导；
+- **复核与回流**：基于置信度区分可靠决策与疑难样本，支持人机协同复核与闭环回流。
 
 ```mermaid
 flowchart LR
@@ -42,49 +44,91 @@ flowchart LR
     E --> F["结果展示与人工复核"]
 ```
 
-
 ---
 
 ## 项目文档
 
-完整的需求、架构、算法方案和跨仓契约集中维护在 [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)，文档能否打开以仓库实际访问权限为准：
+核心设计、架构与跨仓契约集中维护于 [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD) 仓库：
 
-- [项目需求](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)
+- [需求规格](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/需求规格.md)
 - [系统架构](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/系统架构.md)
-- [算法研究方案](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/算法实验.md)
-- [研究现状](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/references/研究现状.md)
+- [算法实验体系](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/experiments/README.md)
+- [研究现状](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/研究现状.md)
 - [推进路线](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/开发路线.md)
 - [数据模型与接口契约](https://github.com/QingMouFoodDate/ProjectPRD/tree/main/contracts)
 - [数据质量规范](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/standards/数据质量规范.md)
 
 ---
 
-## 八仓库职责导航
+## 仓库导航
 
-项目按职责划分为以下七个工程仓库，另由 `.github` 维护组织全局配置与主页展示：
+项目包含八个系统仓（含文档仓和 .github）及独立受控数据仓 data；职责划分不代表八仓均已实现：
 
-| 仓库                                                                | 模块定位       | 主要职责                                 |
-| :------------------------------------------------------------------ | :------------- | :--------------------------------------- |
-| [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢 | 需求、架构、算法方案、接口和质量规范     |
-| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 集成调度训练平台 | 样本资产、数据集版本与切分、标注作业、训练任务调度和模型仓库 |
-| [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测 | 小目标检测、工业 OCR、消融实验和模型导出 |
-| [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台       | 识别会话、证据聚合与标示状态决策，内置 Runtime 执行模型加载和前向推理 |
-| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统   | 优先实现单图识别与双重视图，多图会话和人工纠偏按 C0 推进 |
-| [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端客户端   | 实拍辅助、离线台账和端侧推理探索         |
-| [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信小程序端   | 轻量查验、大字模式和结果分享             |
-| [`.github`](https://github.com/QingMouFoodDate/.github)               | 组织主页配置   | 项目介绍、仓库导航与公开展示维护         |
+| 仓库                                                                | 模块定位         | 主要职责                                                              |
+| :------------------------------------------------------------------ | :--------------- | :-------------------------------------------------------------------- |
+| [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢   | 需求、架构、算法方案、接口和质量规范                                  |
+| [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 集成调度训练平台 | 样本资产、数据集版本与切分、标注作业、训练任务调度和模型仓库          |
+| [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测   | 小目标检测、工业 OCR、消融实验和模型导出                              |
+| [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台         | 识别会话、证据聚合与标示状态决策，完整视觉 Runtime 尚待实现 |
+| [`WebClient`](https://github.com/QingMouFoodDate/WebClient)         | Web 原型系统     | 优先实现单图识别与双重视图，多图会话和人工纠偏按 C0 推进              |
+| [`MobileClient`](https://github.com/QingMouFoodDate/MobileClient)   | 移动端客户端     | 实拍辅助、离线台账和端侧推理探索                                      |
+| [`WxClient`](https://github.com/QingMouFoodDate/WxClient)           | 微信小程序端     | 轻量查验、大字模式和结果分享                                          |
+| [`data`](https://github.com/QingMouFoodDate/data)                   | 数据集与质检门禁 | 数据清单、标注治理、防泄漏切分与质量检查  |
+| [`.github`](https://github.com/QingMouFoodDate/.github)             | 组织主页配置     | 项目介绍、仓库导航与公开展示维护                                      |
 
 ---
 
-## 数据与安全边界
+## 安全边界
 
-项目坚持真实数据、契约先行和渐进式工程原则：
+项目遵循“真实数据、契约先行、渐进落地”原则：
 
-1. 样本以真实食品包装实拍为基础，禁止伪造标签、红圈涂鸦和营销字幕污染；
-2. 各端通过统一的 [API 契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) 和 [模型规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) 协作；
-3. 系统输出的是食品包装上的**标示状态**，不替代食品安全检测；
-4. 对信息缺失、证据冲突或识别置信度不足的情况，分别展示期限状态与复核状态，优先提示补拍或人工核对；信息缺失不等于超期，技术故障单独提示；
-5. 项目先实现 Web 单图 M0 闭环，再按 C0 推进多图与人工纠偏；移动端和微信端暂缓，端侧推理待独立评审；
-6. 离线主基准受控数据集（MasterBenchmark）实行 **1617 张真实原图**规范管理（100% SHA-256 唯一，含 150 张亲审稀缺长尾难例），严格遵循 **8:1:1 科学分层防泄漏切分**（Train 1293 / Val 162 / Test 162），与在线会话数据保持严格物理隔离。
+1. **真实数据基准**：严禁伪造标签与营销修图，实行真实原图规范管理（100% SHA-256 唯一），严格遵循 8:1:1 科学分层防泄漏切分。
+2. **多端契约协同**：各端严格依循统一的 [API 契约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/API.md)、[数据模型](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/DATA.md) 与 [模型规约](https://github.com/QingMouFoodDate/ProjectPRD/blob/main/contracts/MODEL.md) 进行跨仓解耦。
+3. **标示状态界定**：系统输出仅代表包装客观标示状态，明确不替代专业理化或生物学食品安全检测。
+4. **置信度与复核**：信息缺失不等于超期；对置信度不足或证据冲突样本提示人工复核或补拍，起算依据不明时不主观补全。
+5. **渐进迭代节奏**：首期聚焦 Web 单图 M0 闭环验证，移动端与微信端暂缓，端侧离线轻量化部署待独立评估。
 
-可靠直接到期日可独立比较期限，临期阈值属于项目可配置策略。起算依据不明时提示复核，不凭默认口径补日期，也不将直接与派生值差一天或同日生产到期直接判为标示错误；已确认的真实冲突仍保留。
+---
+
+## 本地协作与克隆拓扑
+
+团队开发采用并排多仓工作区拓扑（非 git 子模块或单一巨石仓）：
+
+```text
+QingMouFoodDate/
+├── ProjectPRD/      # 契约与规范中枢
+├── InferPlatform/   # 在线服务与契约 DTO（开发就绪）
+├── WebClient/       # Web 交互原型（契约类型对齐）
+├── MobileClient/    # 移动端规划仓
+├── WxClient/        # 小程序规划仓
+├── ModelTrain/      # 算法与实验仓
+├── TrainPlatform/   # 训练平台调度仓
+├── data/            # 数据集真值、切分与质量门禁仓
+└── .github/         # 组织主页配置与公用工作流
+```
+
+新成员并行克隆各子仓至同一工作区，统一使用 Python 3.12 运行各仓基础门禁，在遵守各端接口契约的前提下开展分工。
+
+---
+
+## 项目引用
+
+如本课题的方法研究、数据集组织方案或原型系统对您的工作有所启发，欢迎引用：
+
+### GB/T 7714
+
+```text
+林方魁, 吕宇轩, 韩天阳, 首雯彬, 彭琨. 轻眸识刻：小目标驱动的食品包装日期智能识别方法研究[R/OL]. 2026. https://github.com/QingMouFoodDate. (指导教师: 林振荣)
+```
+
+### BibTeX
+
+```bibtex
+@misc{lin2026qingmou,
+  title        = {轻眸识刻：小目标驱动的食品包装日期智能识别方法研究 (QingMouFoodDate)},
+  author       = {林方魁 and 吕宇轩 and 韩天阳 and 首雯彬 and 彭琨},
+  howpublished = {\url{https://github.com/QingMouFoodDate}},
+  note         = {指导教师: 林振荣},
+  year         = {2026}
+}
+```
