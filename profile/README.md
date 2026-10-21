@@ -66,7 +66,7 @@ flowchart LR
 
 | 仓库                                                                | 模块定位         | 主要职责                                                              |
 | :------------------------------------------------------------------ | :--------------- | :-------------------------------------------------------------------- |
-| [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 设计与文档中枢   | 需求、架构、算法方案、接口和质量规范                                  |
+| [`ProjectPRD`](https://github.com/QingMouFoodDate/ProjectPRD)       | 需求与契约规范   | 需求、架构、算法方案、接口和质量规范                                  |
 | [`TrainPlatform`](https://github.com/QingMouFoodDate/TrainPlatform) | 集成调度训练平台 | 样本资产、数据集版本与切分、标注作业、训练任务调度和模型仓库          |
 | [`ModelTrain`](https://github.com/QingMouFoodDate/ModelTrain)       | 算法研发与评测   | 小目标检测、工业 OCR、消融实验和模型导出                              |
 | [`InferPlatform`](https://github.com/QingMouFoodDate/InferPlatform) | 推理平台         | 识别会话、证据聚合与标示状态决策，完整视觉 Runtime 尚待实现 |
@@ -96,7 +96,7 @@ flowchart LR
 
 ```text
 QingMouFoodDate/
-├── ProjectPRD/      # 契约与规范中枢
+├── ProjectPRD/      # 需求与契约规范
 ├── InferPlatform/   # 在线服务与契约 DTO（开发就绪）
 ├── WebClient/       # Web 交互原型（契约类型对齐）
 ├── MobileClient/    # 移动端规划仓
