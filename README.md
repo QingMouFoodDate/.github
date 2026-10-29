@@ -17,7 +17,7 @@
 - **主页源码**：[`profile/README.md`](profile/README.md)
 - **线上主页**：[github.com/QingMouFoodDate](https://github.com/QingMouFoodDate)
 - **契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，负责安装中央校验依赖并执行对应语言门禁；配置存在不代表线上已运行通过。
-- **当前边界**：M0 尚未准出，完整视觉 Runtime、真实模型包与 Web UI 待交付；主页不能将设计目标写成已取得的成绩。
+- **当前边界**：M0 单图闭环已归档，视觉 Runtime、真实模型包与 Web UI 已接入受控演示；公网 SLA 与风险认证仍未达正式准出，主页不能将设计目标写成已取得的成绩。
 
 ---
 
