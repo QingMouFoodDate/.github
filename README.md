@@ -1,29 +1,32 @@
-# 组织全局配置
+# .github
 
-> 维护 [QingMouFoodDate](https://github.com/QingMouFoodDate) 组织的公开主页展示与全局规范配置。
+> 维护 [QingMouFoodDate](https://github.com/QingMouFoodDate) 组织的公开主页展示与跨仓可复用 CI 门禁配置。
 
 ---
 
-## 目录结构
+## 一、目录结构与核心职责
 
 ```text
 .github/
-├── README.md          # 仓库运维说明
-├── .github/workflows/ # 可复用契约门禁
+├── README.md                     # 组织级配置仓库运维说明
+├── .gitignore                    # Git 忽略与云盘防冲突规则
+├── .gitattributes                # 跨平台纯 LF 换行约束
+├── .pre-commit-config.yaml       # 提交前自动化门禁配置
+├── .github/workflows/            # 跨仓可复用契约与质量门禁工作流
 └── profile/
-    └── README.md      # 组织公开主页源文件（由 GitHub 引擎直接渲染于组织首页）
+    └── README.md                 # 组织公开主页源文件，由 GitHub 引擎直接渲染于组织首页
 ```
 
 - **主页源码**：[`profile/README.md`](profile/README.md)
 - **线上主页**：[github.com/QingMouFoodDate](https://github.com/QingMouFoodDate)
-- **契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，负责安装中央校验依赖并执行对应语言门禁；配置存在不代表线上已运行通过。
-- **当前边界**：M0 单图闭环已归档，视觉 Runtime、真实模型包与 Web UI 已接入受控演示；公网 SLA 与风险认证仍未达正式准出，主页不能将设计目标写成已取得的成绩。
+- **可复用契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，供 `ProjectPRD`、`InferPlatform`、`WebClient` 等仓库在 GitHub Actions 中统一调用 `verify_contracts.py` 进行跨语言契约校验；
+- **当前工程边界**：M0 单图闭环与 v2.0 双阶段算法深化、多图聚合、字段级人工纠偏、双栏核验工作台及 Android 混合容器均已完成封板；v3.0 正推进端侧量化引擎、C++ 微批次 Worker 池 SLA 攻坚、全站 HTTPS 切换与微信小程序端落地。
 
 ---
 
-## 维护准则
+## 二、维护准则
 
-1. **内容收敛**：对外展示内容统一在 [`profile/README.md`](profile/README.md) 中维护。
-2. **隐私脱敏**：严禁提交本地私有绝对路径、密钥凭证或未脱敏样本。
-3. **状态求真**：主页所列工程状态必须与实际研发进展严格同步。
+1. **内容收敛**：对外公开展示内容统一在 [`profile/README.md`](profile/README.md) 中维护，遵守知识产权“先申请、后公开”保密原则；
+2. **隐私脱敏**：严禁提交本地私有绝对路径、服务器密钥凭证或未脱敏样本；
+3. **状态求真**：主页所列工程状态必须与实际研发进展严格同步，严禁将规划目标写为已验收成绩；
 4. **自动生效**：变更经审查合入 `main` 分支后，GitHub 组织首页自动同步更新。
