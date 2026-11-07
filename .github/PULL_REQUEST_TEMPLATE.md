@@ -20,7 +20,7 @@
 
 - [ ] 是否涉及 `ProjectPRD/contracts/` 下的 OpenAPI、JSON Schema 或 Markdown 契约？
 - [ ] 若涉及契约修改，是否已同步更新 Python DTO (`InferPlatform/app/schemas/`) 与 TypeScript 类型 (`WebClient/src/types/`)？
-- [ ] 是否已在本机执行跨仓对齐检查：`python standards/verify_contracts.py`？
+- [ ] 是否已在本机执行跨仓对齐检查：`python -B standards/verify_contracts.py`？
 - [ ] 本次改动是否坚守“仅声明包装标示状态，不向用户保证食品绝对可食用”的系统判定边界？
 
 ---

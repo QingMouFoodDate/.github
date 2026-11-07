@@ -54,7 +54,7 @@ jobs:
 
       - name: 执行契约静态对齐与 OpenAPI 引用检查
         run: |
-          python .central_prd/standards/verify_contracts.py \
+          python -B .central_prd/standards/verify_contracts.py \
             --contracts-dir .central_prd/contracts \
             --code-dir ${{ inputs.code_dir }} \
             --lang ${{ inputs.lang }}
