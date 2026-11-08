@@ -1,4 +1,4 @@
-# 统一提交前四道门禁：JSON 语法校验 + 大体积文件拦截 + 云盘副本 (1) 拦截 + X-AnyLabeling Base64 膨胀拦截
+# 统一提交前五道门禁：JSON 语法校验 + 大体积文件拦截 + 云盘副本拦截 + X-AnyLabeling Base64 拦截 + 同步残留拦截
 # 安装：pip install pre-commit && pre-commit install
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -19,7 +19,7 @@ repos:
         pass_filenames: false
       - id: no-image-data-bloat
         name: 拦截 X-AnyLabeling 嵌入的 Base64 imageData
-        entry: python -B -c "import sys, json; [sys.exit(1) for f in sys.argv[1:] if f.endswith('.json') and isinstance(json.load(open(f, encoding='utf-8')), dict) and json.load(open(f, encoding='utf-8')).get('imageData') is not None]"
+        entry: python -B -c "import sys, json; [sys.exit(1) for f in sys.argv[1:] if f.endswith('.json') and (lambda d: isinstance(d, dict) and d.get('imageData') is not None)(json.load(open(f, encoding='utf-8')))]"
         language: system
         types: [json]
       - id: no-sync-residue
