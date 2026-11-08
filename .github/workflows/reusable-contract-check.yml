@@ -41,7 +41,7 @@ jobs:
           persist-credentials: false
           sparse-checkout: |
             contracts
-            standards/verify_contracts.py
+            standards/contracts.py
             standards/requirements.txt
 
       - name: 配置 Python 3.12 运行环境
@@ -54,7 +54,7 @@ jobs:
 
       - name: 执行契约静态对齐与 OpenAPI 引用检查
         run: |
-          python -B .central_prd/standards/verify_contracts.py \
+          python -B .central_prd/standards/contracts.py \
             --contracts-dir .central_prd/contracts \
             --code-dir ${{ inputs.code_dir }} \
             --lang ${{ inputs.lang }}

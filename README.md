@@ -19,7 +19,7 @@
 
 - **主页源码**：[`profile/README.md`](profile/README.md)
 - **线上主页**：[github.com/QingMouFoodDate](https://github.com/QingMouFoodDate)
-- **可复用契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，供 `ProjectPRD`、`InferPlatform`、`WebClient` 等仓库在 GitHub Actions 中统一调用 `verify_contracts.py` 进行跨语言契约校验；
+- **可复用契约工作流**：[reusable-contract-check.yml](.github/workflows/reusable-contract-check.yml)，供 `ProjectPRD`、`InferPlatform`、`WebClient` 等仓库在 GitHub Actions 中统一调用 `contracts.py` 进行跨语言契约校验；
 - **当前工程边界**：M0 单图闭环与 v2.0 双阶段算法深化、多图聚合、字段级人工纠偏、双栏核验工作台及 Android 混合容器均已完成封板；v3.0 正推进端侧量化引擎、C++ 微批次 Worker 池 SLA 攻坚、全站 HTTPS 切换与微信小程序端落地。
 
 ---
