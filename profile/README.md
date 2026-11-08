@@ -41,6 +41,6 @@
 
 ## 四、仓库体系与知识产权说明
 
-项目按「产品规约与契约基准 `ProjectPRD` / 受控数据治理 `data` / 训练调度治理 `TrainPlatform` / 算法模型研发 `ModelTrain` / 在线推理服务 `InferPlatform` / 多端应用 `WebClient`、`MobileClient`、`WxClient`」分仓协同，各仓职责与接口契约独立维护。
+项目按「组织通用规约 `.github` / 产品规约与契约基准 `ProjectPRD` / 评测与申报归档 `reports` / 受控数据治理 `data` / 训练调度治理 `TrainPlatform` / 算法模型研发 `ModelTrain` / 在线推理服务 `InferPlatform` / 多端应用 `WebClient`、`MobileClient`、`WxClient`」十仓体系分仓协同，各仓职责与接口契约独立维护。
 
 本项目坚持「先申请、后公开」原则：在核心发明专利完成申请受理前，算法方案、系统实现与数据集细节保持私有访问，本页面仅用于说明项目背景与整体架构方向。
