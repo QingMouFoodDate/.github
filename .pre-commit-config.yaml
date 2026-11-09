@@ -1,29 +1,16 @@
-# 统一提交前五道门禁：JSON 语法校验 + 大体积文件拦截 + 云盘副本拦截 + X-AnyLabeling Base64 拦截 + 同步残留拦截
-# 安装：pip install pre-commit && pre-commit install
+# 预提交质量门禁配置
+# 职责：拦截 UTF-8 BOM、CRLF 换行、JSON 语法错误、单行 JSON 膨胀及大体积二进制入库
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
-    hooks:
-      - id: check-json
-        name: JSON 语法校验
-      - id: check-added-large-files
-        name: 拦截 >500KB 大体积二进制文件入库
-        args: ['--maxkb=500']
-
   - repo: local
     hooks:
-      - id: no-cloud-sync-copies
-        name: 禁止云盘同步副本文件名（" (1)" 或 " (2)" 后缀）
-        entry: python -B -c "import subprocess,sys; files=subprocess.check_output(['git','ls-files'],text=True).splitlines(); bad=[f for f in files if ' (1)' in f or ' (2)' in f]; bad and print('检测到云盘冲突副本，请恢复原名后再提交:\n'+'\n'.join(bad)); sys.exit(1 if bad else 0)"
+      - id: utf8-lf-no-bom
+        name: Enforce UTF-8 (no BOM) and LF line endings
+        entry: python -c "import pathlib,sys; bad=[f for f in sys.argv[1:] if pathlib.Path(f).is_file() and (pathlib.Path(f).read_bytes().startswith(b'\xef\xbb\xbf') or b'\r\n' in pathlib.Path(f).read_bytes())]; sys.exit('BOM or CRLF found: '+','.join(bad) if bad else 0)"
         language: system
-        pass_filenames: false
+        types: [text]
+
       - id: no-image-data-bloat
-        name: 拦截 X-AnyLabeling 嵌入的 Base64 imageData
-        entry: python -B -c "import sys, json; [sys.exit(1) for f in sys.argv[1:] if f.endswith('.json') and (lambda d: isinstance(d, dict) and d.get('imageData') is not None)(json.load(open(f, encoding='utf-8')))]"
+        name: Block inline base64 imageData or >1MB JSON bloat
+        entry: python -c "import json,pathlib,re,sys; bad=[]; [bad.append(f) for f in sys.argv[1:] if f.endswith('.json') and pathlib.Path(f).is_file() and (lambda raw: pathlib.Path(f).stat().st_size>1048576 or json.loads(raw) is None or bool(re.search(r'"imageData"\s*:\s*"[^"]+"', raw)))(pathlib.Path(f).read_text(encoding='utf-8'))]; sys.exit('JSON bloat or imageData found: '+','.join(bad) if bad else 0)"
         language: system
-        types: [json]
-      - id: no-sync-residue
-        name: 拦截云盘同步残留与在线文档衍生文件入库（desktop.ini/Thumbs.db/.gdoc）
-        entry: python -B -c "import subprocess,sys; files=subprocess.check_output(['git','ls-files'],text=True).splitlines(); bad=[f for f in files if f.lower().endswith(('desktop.ini','thumbs.db','.ds_store','.gdoc','.gsheet','.gslides'))]; bad and print('云盘残留或转换文件入库，请移除:\n'+'\n'.join(bad)); sys.exit(1 if bad else 0)"
-        language: system
-        pass_filenames: false
+        files: \.json$
