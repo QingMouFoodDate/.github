@@ -1,4 +1,4 @@
-# PULL_REQUEST_TEMPLATE
+# 轻眸识刻合并请求模板
 
 ## 变更说明
 
