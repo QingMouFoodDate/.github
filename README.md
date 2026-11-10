@@ -12,7 +12,10 @@
 ├── .gitignore                    # Git 忽略与云盘防冲突规则
 ├── .gitattributes                # 跨平台纯 LF 换行约束
 ├── .pre-commit-config.yaml       # 提交前自动化门禁配置
-├── .github/workflows/            # 跨仓可复用契约与质量门禁工作流
+├── .github/
+│   ├── PULL_REQUEST_TEMPLATE.md  # 组织级统一合并请求与五道门禁核验模板
+│   └── workflows/
+│       └── reusable-contract-check.yml # 跨仓可复用契约与质量门禁工作流
 └── profile/
     └── README.md                 # 组织公开主页源文件，由 GitHub 引擎直接渲染于组织首页
 ```

@@ -5,12 +5,14 @@ repos:
     hooks:
       - id: utf8-lf-no-bom
         name: Enforce UTF-8 (no BOM) and LF line endings
-        entry: python -c "import pathlib,sys; bad=[f for f in sys.argv[1:] if pathlib.Path(f).is_file() and (pathlib.Path(f).read_bytes().startswith(b'\xef\xbb\xbf') or b'\r\n' in pathlib.Path(f).read_bytes())]; sys.exit('BOM or CRLF found: '+','.join(bad) if bad else 0)"
+        entry: >-
+          python -c "import pathlib,sys; bad=[f for f in sys.argv[1:] if pathlib.Path(f).is_file() and (pathlib.Path(f).read_bytes().startswith(b'\xef\xbb\xbf') or b'\r\n' in pathlib.Path(f).read_bytes())]; sys.exit('BOM or CRLF found: '+','.join(bad) if bad else 0)"
         language: system
         types: [text]
 
       - id: no-image-data-bloat
         name: Block inline base64 imageData or >1MB JSON bloat
-        entry: python -c "import json,pathlib,re,sys; bad=[]; [bad.append(f) for f in sys.argv[1:] if f.endswith('.json') and pathlib.Path(f).is_file() and (lambda raw: pathlib.Path(f).stat().st_size>1048576 or json.loads(raw) is None or bool(re.search(r'"imageData"\s*:\s*"[^"]+"', raw)))(pathlib.Path(f).read_text(encoding='utf-8'))]; sys.exit('JSON bloat or imageData found: '+','.join(bad) if bad else 0)"
+        entry: >-
+          python -c "import json,pathlib,re,sys; bad=[]; [bad.append(f) for f in sys.argv[1:] if f.endswith('.json') and pathlib.Path(f).is_file() and (lambda raw: pathlib.Path(f).stat().st_size>1048576 or json.loads(raw) is None or bool(re.search(r'\"imageData\"\s*:\s*\"[^\"]+\"', raw)))(pathlib.Path(f).read_text(encoding='utf-8'))]; sys.exit('JSON bloat or imageData found: '+','.join(bad) if bad else 0)"
         language: system
         files: \.json$
